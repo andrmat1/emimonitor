@@ -19,28 +19,29 @@ location = '_Room002' #describes situational use
 if 'EMI_DATA' not in os.listdir():
         os.mkdir('EMI_DATA')
 
-def takespectra(time_interval):
+def takespectra(low, high, time_interval):
     a = 0
     while a < 1:
         ti = time.time()
         year_month = time.strftime('%Y_%m',time.localtime(ti))
         year_month_day = time.strftime('%Y_%m_%d',time.localtime(ti))
         
-        spec = spectra(150, 1600e6, 2.5e6)
+        spec = spectra(low, high, 2.5e6)
         
+        save_index = 0
         if year_month+location+'_EMI.h5' not in os.listdir('DATA'):
             print('New month file created at \'/Data/'+year_month+location+'_EMI.h5\'')
             file = h5py.File('DATA/'+year_month+location+'_EMI.h5','w')
             file.attrs['time_created'] = ti
             file.attrs['location'] = location
             ffreq = file.create_dataset('Frequency',data=spec[0])
-            
+
         else:
             file = h5py.File('DATA/'+year_month+location+'_EMI.h5','r+')
 
         if year_month_day not in list(file):
             print('New daily dataset created for ' + year_month_day)
-            fspec = file.create_dataset(year_month_day,shape=[int(24*60*60/time_interval),len(spec[1])])
+            fspec = file.create_dataset(year_month_day,shape=[len(spec[1]),int(24*60*60/time_interval)])
             ftime = file.create_dataset(year_month_day+'_time',shape=[int(24*60*60/time_interval)])
             fspec[0] = spec[1]
             ftime[0] = ti
@@ -51,8 +52,8 @@ def takespectra(time_interval):
         else:
             fspec = file[year_month_day]
             ftime = file[year_month_day+'_time']
-            fspec[save_index] = spectra
-            ftime[save_index] = t_0
+            fspec[save_index] = spec[1]
+            ftime[save_index] = ti
         file.close()
             
         tf = time.time()
@@ -80,7 +81,8 @@ def spectra(lowfrq, highfrq, samplerate):
 
     # configure sample rate
     sdr.sample_rate = samplerate # Hz
-
+    directsampling = 'f'
+    
     # loop through center freqs, collecting 5 MHz of data at each one
     for i in cfqs:
         # test to make sure still in range
@@ -88,13 +90,14 @@ def spectra(lowfrq, highfrq, samplerate):
             return (freqlist, pwrlist)
         # assign center frequency
         sdr.center_freq = i
-        directsampling = 1
         if i < 30e6:
-            if directsampling == 1:
+            if directsampling == 'f':
                 sdr.set_direct_sampling('i')
+                directsampling = 't'
         if i >= 30e6:
-            if directsampling == 2:
+            if directsampling == 't':
                 sdr.set_direct_sampling(0)
+                directsampling = 'f'
         # 256 samples because of welch setting
         sample = sdr.read_samples(256)
         # use welch method to calculate power, outputs numpy arrays
@@ -129,4 +132,6 @@ def spectra(lowfrq, highfrq, samplerate):
     sdr.close()
     return (freqlist, pwrlist)
 
-takespectra(time_interval)
+low = float(input("Low frequency: "))
+high = float(input("High frequency: "))
+takespectra(low, high, time_interval)
