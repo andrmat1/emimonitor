@@ -9,7 +9,7 @@ The script contains a function for taking the spectra with the RTL-SDR called "s
 It also contains a function called "takespectra" designed to facilitate well labeled datasets and files, as well as a function called "nextvals" that helps to iterate through columns in an array when saving data. 
 
 ### Plots generated
-![My animated logo](assets/my-logo.svg)
+![Full Range Plot](main/150Hz-1.6GHz, 1m antenna.pdf)
 
 
 ##
