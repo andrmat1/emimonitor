@@ -43,3 +43,8 @@ This script generates long PDFs of zoomed in spectra plots, to allow better obse
 Example of a few of the zoomed in plots. 
 
 ![Full Zoomed PDF that Breaks Spectrum into 10 MHz Pieces](https://github.com/andrmat1/emimonitor/blob/main/fullspec_002_10MHz_pieces.pdf)
+
+## Waterfall Plots
+Waterfall plots were also made using frequency as the x axis, time as the y axis, and color as the z axis. Color was placed on a log scale. These allow for easy discrimination between time independent and dependent frequencies. They were constructed by using plt.imshow() with the frequency and power arrays. 
+
+![alt text](https://github.com/andrmat1/emimonitor/blob/main/waterfall.png)
