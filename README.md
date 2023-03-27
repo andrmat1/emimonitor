@@ -12,19 +12,29 @@ The device operates the best if it is plugged in and a few scans are taken befor
 The device is plugged into a loop antenna that I made out of wires soldered to an SMA connector. A loop antenna was chosen for its precision in certain frequency ranges, and its ability to be fine tuned to look at different areas of the electromagnetic spectrum. This antenna is used for frequencies above the 30 MHz threshold. Below 30 MHz, a modification was performed to the RTL-SDR to increase its accuracy. This modification involved soldering a wire to the input capacitor and the ground plane of the PCB, and then using this as an antenna directly into the environment for the sub-30 MHz range. The device was providing useless non-physical data before the modification. Now, it has been able to consistently measure signals within 0.5 MHz in this range. 
 
 ## Device Accuracy
-![alt text](https://github.com/andrmat1/emimonitor/blob/main/6mhz.png)
+
 Through testing the device with a signal generator, an uncertainty for the accuracy has been obtained in 3 different operational frequency ranges. The signal generator used did not exceed 100 MHz, so the highest frequencies tested are around there. There are currently 2 working RTL-SDR EMI monitors with the modification performed, and accuracy is reported for both (one device is called "new" and one is called "old"). 
 
 NEW Accuracy:
+
 Low Frequency Range (5-15 MHz): ±0.33 MHz
+
 Mid Frequency Range (~50 MHz): ±0.65 MHz 
+
 High Frequency Range (~100 MHz): ±1.15 MHz
 
+
 OLD Accuracy: 
+
 Low Frequency Range (5-15 MHz): ±0.38 MHz
+
 Mid Frequency Range (~50 MHz): ±1.75 MHz 
+
 High Frequency Range (~100 MHz): ±1.00 MHz
 
+![alt text](https://github.com/andrmat1/emimonitor/blob/main/6mhz.png)
+
+This plot shows the spike from a signal generator inputting a sine wave at 6 MHz into the device. 
 # Scripts
 
 ## takespectra.py
