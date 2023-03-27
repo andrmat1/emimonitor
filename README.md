@@ -1,7 +1,31 @@
 # RTL-SDR Based EMI Monitor
-Scripts for interfacing with the RTL-SDR to monitor EMI in laboratories. 
 
 Developed by Andrew Mattson in 2022
+
+# Functionality
+
+## Warning!
+
+The device operates the best if it is plugged in and a few scans are taken before actual data taking begins. This is because once the circuit resets from not being plugged in, it must reconfigure to accurately acquire signals. 
+
+## Antenna and Modifications
+The device is plugged into a loop antenna that I made out of wires soldered to an SMA connector. A loop antenna was chosen for its precision in certain frequency ranges, and its ability to be fine tuned to look at different areas of the electromagnetic spectrum. This antenna is used for frequencies above the 30 MHz threshold. Below 30 MHz, a modification was performed to the RTL-SDR to increase its accuracy. This modification involved soldering a wire to the input capacitor and the ground plane of the PCB, and then using this as an antenna directly into the environment for the sub-30 MHz range. The device was providing useless non-physical data before the modification. Now, it has been able to consistently measure signals within 0.5 MHz in this range. 
+
+## Device Accuracy
+![alt text](https://github.com/andrmat1/emimonitor/blob/main/Screen%Shot%2023-03-25%at%12.46.35%PM.png)
+Through testing the device with a signal generator, an uncertainty for the accuracy has been obtained in 3 different operational frequency ranges. The signal generator used did not exceed 100 MHz, so the highest frequencies tested are around there. There are currently 2 working RTL-SDR EMI monitors with the modification performed, and accuracy is reported for both (one device is called "new" and one is called "old"). 
+
+NEW Accuracy:
+Low Frequency Range (5-15 MHz): ±0.33 MHz
+Mid Frequency Range (~50 MHz): ±0.65 MHz 
+High Frequency Range (~100 MHz): ±1.15 MHz
+
+OLD Accuracy: 
+Low Frequency Range (5-15 MHz): ±0.38 MHz
+Mid Frequency Range (~50 MHz): ±1.75 MHz 
+High Frequency Range (~100 MHz): ±1.00 MHz
+
+# Scripts
 
 ## takespectra.py
 This script is designed to collect data and save it to an HDF5 file. When it is run, it will ask the user for two inputs that form the frequency range the scan will take place in. The function automatically creates an EMI_DATA folder if none is present, and saves spectra into monthly files and daily datasets. Each data file is saved with a time stamp along with a location tag. The sampling rate is set to 2.5 MHz, but this can be customized easily as it is an input argument in the function call. The time_interval parameter is a variable inside of the script, and designates how often the script will run. It will continue this process until it is stopped by the user.
@@ -15,8 +39,8 @@ This plot shows a spectrum taken of the full operating range of this device. It 
 ![alt text](https://github.com/andrmat1/emimonitor/blob/main/direct%20vs%20indirect.png)
 This plot shows the takespectra.py script highlighting the much greater sensitivity of the device in direct I/Q sampling mode at frequencies below 30 MHz. 
 
-![alt text](https://github.com/andrmat1/emimonitor/blob/main/low%20freq.png)
-This plot shows the weird behavior of the monitor in the low frequency range. There are several spots where a discontinuity appears on the graph, and it is believed to be a result of circuit switching within the RTL-SDR when in direct sampling mode.
+![alt text](https://github.com/andrmat1/emimonitor/blob/main/low%freq.png)
+This plot shows the behavior of the monitor in the low frequency range. Thanks to the modification discussed above, the RTL-SDR provides useful data in this range. 
 
 ## analyze.py
 This script analyzes the data collected by the takespectra.py script. It calculates an overall average of the entire spectra, as a baseline measurement. It also finds a rolling average and corresponding rolling standard deviation using a calculated interval. The power value at each point was compared to the rolling average and standard deviation to determine if it was a "spike". These spikes were found with a width of 10 KHz, so if multiple frequencies spiked within this region the script selected the most powerful value and saved it as the spike. The analyze function within this script takes inputs of the low and high frequencies in the range, the frequency and power arrays to be analyzed, and a "spike" parameter that determines how many standard deviations away from the average a value must be to register as a spike. When this function runs, it creates a plot with these averages and spikes plotted. It also returns a list of the spiking frequency regions, as well as how many of them occur in the spectrum that was analyzed.
