@@ -50,6 +50,7 @@ This plot shows a spectrum taken of the full operating range of this device. It 
 This plot shows the takespectra.py script highlighting the much greater sensitivity of the device in direct I/Q sampling mode at frequencies below 30 MHz. 
 
 ![alt text](https://github.com/andrmat1/emimonitor/blob/main/lowfreq.png)
+
 This plot shows the behavior of the monitor in the low frequency range. Thanks to the modification discussed above, the RTL-SDR provides useful data in this range. 
 
 ## analyze.py
