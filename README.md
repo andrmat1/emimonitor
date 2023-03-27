@@ -12,7 +12,7 @@ The device operates the best if it is plugged in and a few scans are taken befor
 The device is plugged into a loop antenna that I made out of wires soldered to an SMA connector. A loop antenna was chosen for its precision in certain frequency ranges, and its ability to be fine tuned to look at different areas of the electromagnetic spectrum. This antenna is used for frequencies above the 30 MHz threshold. Below 30 MHz, a modification was performed to the RTL-SDR to increase its accuracy. This modification involved soldering a wire to the input capacitor and the ground plane of the PCB, and then using this as an antenna directly into the environment for the sub-30 MHz range. The device was providing useless non-physical data before the modification. Now, it has been able to consistently measure signals within 0.5 MHz in this range. 
 
 ## Device Accuracy
-![alt text](https://github.com/andrmat1/emimonitor/blob/main/Screen%Shot%2023-03-25%at%12.46.35%PM.png)
+![alt text](https://github.com/andrmat1/emimonitor/blob/main/6mhz.png)
 Through testing the device with a signal generator, an uncertainty for the accuracy has been obtained in 3 different operational frequency ranges. The signal generator used did not exceed 100 MHz, so the highest frequencies tested are around there. There are currently 2 working RTL-SDR EMI monitors with the modification performed, and accuracy is reported for both (one device is called "new" and one is called "old"). 
 
 NEW Accuracy:
@@ -39,7 +39,7 @@ This plot shows a spectrum taken of the full operating range of this device. It 
 ![alt text](https://github.com/andrmat1/emimonitor/blob/main/direct%20vs%20indirect.png)
 This plot shows the takespectra.py script highlighting the much greater sensitivity of the device in direct I/Q sampling mode at frequencies below 30 MHz. 
 
-![alt text](https://github.com/andrmat1/emimonitor/blob/main/low%freq.png)
+![alt text](https://github.com/andrmat1/emimonitor/blob/main/lowfreq.png)
 This plot shows the behavior of the monitor in the low frequency range. Thanks to the modification discussed above, the RTL-SDR provides useful data in this range. 
 
 ## analyze.py
